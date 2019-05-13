@@ -1,0 +1,40 @@
+﻿□64bitビルド
+
+■CMakeが必要
+https://cmake.org/download/
+→cmake-3.14.3-win64-x64.msi
+
+■OpenSSLが必要
+→バイナリインストール
+https://slproweb.com/products/Win32OpenSSL.html
+Win64OpenSSL-1_1_1b.msi
+
+git clean -fdx
+cmake -DOPENSSL_ROOT_DIR=C:\Program Files\OpenSSL-Win64 -G"Visual Studio 11 Win64" .
+msbuild FreeRDP.sln /p:Configuration=Release
+
+→リンクエラー
+"D:\Develop\Project\github\odenyakko\FreeRDP\winpr\libwinpr\winpr.vcxproj" (既定のターゲット) (5) ->(Link ターゲット) ->
+  hash.obj : error LNK2019: 未解決の外部シンボル EVP_MD_CTX_create が関数 winpr_Digest で参照されました。 [D:\Develop\Project\github\odenyakko\FreeRDP\winpr\libwinpr\winpr.vcxproj]
+  hash.obj : error LNK2019: 未解決の外部シンボル EVP_MD_CTX_destroy が関数 winpr_Digest で参照されました。 [D:\Develop\Project\github\odenyakko\FreeRDP\winpr\libwinpr\winpr.vcxproj]
+
+→OpenSSL1.0.2に変更 Win64OpenSSL-1_0_2r.exe
+git clean -fdx
+cmake -DOPENSSL_ROOT_DIR=C:\Program Files\OpenSSL-Win64 -G"Visual Studio 11 Win64" .
+msbuild FreeRDP.sln /p:Configuration=Release
+
+→ビルドエラー
+cl : コマンド ライン warning D9002: 不明なオプション '/arch:SSE2' を無視します [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]  prim_YUV_ssse3.c
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(53): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(54): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(55): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(57): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(60): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(61): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(62): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(64): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(67): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(68): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(70): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
+
+→Visual Studio 2013で開きアップグレードしてビルド→OK
