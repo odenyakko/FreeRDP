@@ -38,3 +38,8 @@ D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3
 D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3.c(70): error C2440: '初期化中' : '__m128i' から 'char' に変換できません。 [D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\freerdp.vcxproj]
 
 →Visual Studio 2013で開きアップグレードしてビルド→OK
+
+→Visual Studio 2017ビルド
+git clean -fdx
+cmake -DOPENSSL_ROOT_DIR=C:\Program Files\OpenSSL-Win64 -G"Visual Studio 15 Win64" .
+  →Client/Windows/wfreerdp-client→OK
