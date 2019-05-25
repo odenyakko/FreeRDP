@@ -41,6 +41,6 @@ D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3
 
 →Visual Studio 2017ビルド
 git clean -fdx
-cmake -DOPENSSL_ROOT_DIR=C:\Program Files\OpenSSL-Win64 -G"Visual Studio 15 Win64" .
+cmake -DOPENSSL_ROOT_DIR=C:\Program Files\OpenSSL-Win64 -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_USE_STATIC_LIBS=TRUE -G"Visual Studio 15 Win64" .
   →Client/Windows/wfreerdp-client→OK
     libeay32.dll ssleay32.dll が必要
