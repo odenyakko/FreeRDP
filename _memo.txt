@@ -5,6 +5,19 @@ https://ci.freerdp.com/job/freerdp-nightly-windows/
 https://github.com/FreeRDP/FreeRDP/wiki/Build-on-Windows-Visual-C---2012-(32-and-64-bit)
 
 
+■キーボードが英語モードとなる
+  --Japanese Keyboard not working
+  https://freerdp-devel.narkive.com/I4jZAW8R/japanese-keyboard-not-working
+  
+  settings->KeyboardLayout = 0xE0010411 とすれば、正常動作
+    type=7,subtype=2,functionkey=12となる
+    →デフォルトで4,2,12 自動判定は行われない
+
+  →/kbd:0xE0010411 を指定しても、無条件でGetKeyboardLayoutの値に上書きされている
+    →settings->KeyboardLayout == 0のみ、GetKeyboardLayoutで上書きするよう修正
+
+  →/kbd-type:7 /kbd-subtype:2 でもOK
+
 
 ■ヘルプ
 FreeRDP - A Free Remote Desktop Protocol Implementation
