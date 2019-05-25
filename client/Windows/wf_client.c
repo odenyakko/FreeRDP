@@ -244,7 +244,8 @@ static BOOL wf_pre_connect(freerdp* instance)
 	if (!freerdp_client_load_addins(context->channels, instance->settings))
 		return -1;
 
-	freerdp_set_param_uint32(settings, FreeRDP_KeyboardLayout,
+	if (freerdp_get_param_uint32(settings, FreeRDP_KeyboardLayout) == 0)
+		freerdp_set_param_uint32(settings, FreeRDP_KeyboardLayout,
 	                         (int) GetKeyboardLayout(0) & 0x0000FFFF);
 	PubSub_SubscribeChannelConnected(instance->context->pubSub,
 	                                 wf_OnChannelConnectedEventHandler);
