@@ -1,5 +1,19 @@
-﻿□64bitビルド
+﻿■64bitビルド
 
+※VS2017 x64ビルド環境
+https://www.openssl.org/source/openssl-1.0.2r.tar.gz
+perl Configure no-asm --prefix=..\dist\openssl VC-WIN64A
+ms\do_win64a.bat
+nmake -f ms\nt.mak
+nmake -f ms\nt.mak test
+nmake -f ms\nt.mak install
+→dist\opensslをexternalへコピー
+
+git clean -fdx
+cmake -DOPENSSL_ROOT_DIR=%cd%\..\openssl\dist\openssl ^
+ -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_STATIC=yes -G"Visual Studio 15 Win64" .
+
+----
 ■CMakeが必要
 https://cmake.org/download/
 →cmake-3.14.3-win64-x64.msi
@@ -39,8 +53,49 @@ D:\Develop\Project\github\odenyakko\FreeRDP\libfreerdp\primitives\prim_YUV_ssse3
 
 →Visual Studio 2013で開きアップグレードしてビルド→OK
 
-→Visual Studio 2017ビルド
+→Visual Studio 2017 Staticビルド
 git clean -fdx
-cmake -DOPENSSL_ROOT_DIR=C:\Program Files\OpenSSL-Win64 -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_USE_STATIC_LIBS=TRUE -G"Visual Studio 15 Win64" .
+cmake -DOPENSSL_ROOT_DIR=C:\Program Files\OpenSSL-Win64 -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_STATIC=yes -G"Visual Studio 15 Win64" .
   →Client/Windows/wfreerdp-client→OK
-    libeay32.dll ssleay32.dll が必要
+
+→SSLライブラリでリンクエラー
+1>ssleay32MT.lib(t1_enc.obj) : error LNK2019: 未解決の外部シンボル __iob_func が関数 tls1_enc で参照されました。
+1>libeay32MT.lib(cryptlib.obj) : error LNK2001: 外部シンボル "__iob_func" は未解決です。
+1>libeay32MT.lib(txt_db.obj) : error LNK2001: 外部シンボル "__iob_func" は未解決です。
+1>libeay32MT.lib(ui_openssl.obj) : error LNK2001: 外部シンボル "__iob_func" は未解決です。
+1>libeay32MT.lib(cryptlib.obj) : error LNK2019: 未解決の外部シンボル _vsnprintf が関数 OPENSSL_showfatal で参照されました。
+1>libeay32MT.lib(cryptlib.obj) : error LNK2019: 未解決の外部シンボル _vsnwprintf が関数 OPENSSL_showfatal で参照されました。
+
+  https://araramistudio.jimdo.com/2017/05/12/c-lnk2019-%E6%9C%AA%E8%A7%A3%E6%B1%BA%E3%81%AE%E5%A4%96%E9%83%A8%E3%82%B7%E3%83%B3%E3%83%9C%E3%83%AB-sscanf-%E3%81%8C%E9%96%A2%E6%95%B0-xxx-%E3%81%A7%E5%8F%82%E7%85%A7%E3%81%95%E3%82%8C%E3%81%BE%E3%81%97%E3%81%9F/
+  →VS2015以前との非互換性
+    legacy_stdio_definitions.lib 追加でひとまず回避
+    https://github.com/rougier/freetype-gl/blob/master/demos/CMakeLists.txt
+    https://www.opencascade.com/content/problems-creating-vs-2017-solution-cmake
+    https://git.rtmaps.net/gwenael/sdk-visu/blob/9661f33d9b8ba5be027bc48967a822d57744e8e3/CMakeLists.txt
+
+→OpenSSLもビルド
+https://www.openssl.org/source/openssl-1.0.2r.tar.gz
+perl Configure no-asm --prefix=..\dist\openssl VC-WIN64A
+ms\do_win64a.bat
+nmake -f ms\nt.mak
+nmake -f ms\nt.mak test
+nmake -f ms\nt.mak install
+
+git clean -fdx
+cmake -DCMAKE_USE_RELATIVE_PATHS=ON ^
+ -DOPENSSL_ROOT_DIR=..\openssl\dist -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_STATIC=yes -G"Visual Studio 15 Win64" .
+
+  https://cmake.org/cmake/help/latest/variable/CMAKE_USE_RELATIVE_PATHS.html
+  →相対パス出力機能は3.4で廃止・・・
+  →https://cmake.org/files/v3.3/
+
+git clean -fdx
+..\cmake-3.3.2-win32-x86\\bin\cmake -DCMAKE_USE_RELATIVE_PATHS=TRUE ^
+ -DOPENSSL_ROOT_DIR=.\external\openssl -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_STATIC=yes ^
+ -G"Visual Studio 14 2015 Win64" .
+
+→□include/libのパスは絶対パスで出力される
+  →置換 AdditionalIncludeDirectories
+     D:\Develop\Project\github\odenyakko\FreeRDP\external -> .\external
+     D:\Develop\Project\github\odenyakko\FreeRDP -> .\
+  →ひとまずプロジェクトファイルの登録は行わずに進める
