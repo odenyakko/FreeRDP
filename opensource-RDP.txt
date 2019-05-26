@@ -1,0 +1,12 @@
+﻿--rdesktop: A Remote Desktop Protocol Client
+https://www.rdesktop.org/
+→freeRDPの派生元 GPL
+
+
+--Remmina
+https://remmina.org/
+
+
+--xrdp by neutrinolabs
+http://www.xrdp.org/
+→RDPサーバー
