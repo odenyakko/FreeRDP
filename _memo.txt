@@ -20,6 +20,22 @@ debug\wfreerdp.exe /bpp:16 /gfx +window-drag /kbd:0xE0010411 ^
      freerdp_image_copy_from_pointer_dataのgdi->dstFormatとsrcFormatのbpp不一致でDIBバッファ不足→無効アドレス参照
      →srcFormatを参照することで回避
 
+→/gfxで大幅に速度改善
+→/gfx-h264 にてH264転送が利用可能
+
+  □実行ファイルのDPIAware
+    →CMake出力のvcprojはマニフェスト自動生成/DPIAware無し
+
+  □実行時のDPIAware
+
+
+□ツールバー
+→フルスクリーン時に表示させるには /f /toolbarオプションを指定
+  →ウィンドウのリストアが正しく動作しない(タイトルバーが消えてリサイズ、移動ができなくなる)
+
+■サウンド
+/soundで有効化
+
 
 ■キーボードが英語モードとなる
   --Japanese Keyboard not working
