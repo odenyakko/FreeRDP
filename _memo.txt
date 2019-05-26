@@ -4,6 +4,22 @@ https://ci.freerdp.com/job/freerdp-nightly-windows/
 --Build on Windows Visual C 2012 (32 and 64 bit) · FreeRDP/FreeRDP Wiki
 https://github.com/FreeRDP/FreeRDP/wiki/Build-on-Windows-Visual-C---2012-(32-and-64-bit)
 
+--RDP Protocol
+  --[MS-RDPBCGR]: Client Core Data (TS_UD_CS_CORE) | Microsoft Docs
+  https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/00f1da4a-ee9c-421a-852f-c19f92343d73
+
+
+debug\wfreerdp.exe /bpp:16 /gfx +window-drag /kbd:0xE0010411 ^
+ /scale-desktop:200 /scale-device:100 /size:2000x1000 /sound /v:  /u: /p:
+
+■高DPI
+→以下のオプションでスケーリング指定が可能だが、途中クラッシュする
+  /scale-desktop:200 /scale-device:100
+  →マウスカーソルイメージの展開でクラッシュ
+    wf_graphics.c wf_Pointer_New
+     freerdp_image_copy_from_pointer_dataのgdi->dstFormatとsrcFormatのbpp不一致でDIBバッファ不足→無効アドレス参照
+     →srcFormatを参照することで回避
+
 
 ■キーボードが英語モードとなる
   --Japanese Keyboard not working
