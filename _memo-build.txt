@@ -1,6 +1,6 @@
 ﻿■64bitビルド
 
-※VS2017 x64ビルド環境
+※VS2019 x64ビルド環境
 https://www.openssl.org/source/openssl-1.0.2r.tar.gz
 perl Configure no-asm --prefix=..\dist\openssl VC-WIN64A
 ms\do_win64a.bat
@@ -11,7 +11,7 @@ nmake -f ms\nt.mak install
 
 git clean -fdx
 cmake -DOPENSSL_ROOT_DIR=%cd%\..\openssl\dist\openssl ^
- -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_STATIC=yes -G"Visual Studio 15 Win64" .
+ -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_STATIC=yes -A"x64" -G"Visual Studio 16" .
 
 ----
 ■CMakeが必要
@@ -99,3 +99,10 @@ git clean -fdx
      D:\Develop\Project\github\odenyakko\FreeRDP\external -> .\external
      D:\Develop\Project\github\odenyakko\FreeRDP -> .\
   →ひとまずプロジェクトファイルの登録は行わずに進める
+
+■VS2019
+git clean -fdx
+cmake -DOPENSSL_ROOT_DIR=%cd%\..\openssl\dist\openssl ^
+ -DBUILD_SHARED_LIBS=OFF -DMSVC_RUNTIME=static -DOPENSSL_STATIC=yes -A"x64" -G"Visual Studio 16" .
+
+→アーキテクチャは x64 -Aで指定
